@@ -1,10 +1,11 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 
-@api_view(["GET", "POST"])
+@api_view(http_method_names=["GET", "POST"])
+@permission_classes((IsAuthenticated,))
 def say_hello(request: Request):
     if request.method == "GET":
         return Response({"message": "Hello World!"})
@@ -14,4 +15,3 @@ def say_hello(request: Request):
         if not name:
             return Response({"error": "No name passed"})
         return Response({"message": "Hello {}!".format(name)})
-
